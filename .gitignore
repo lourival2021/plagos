@@ -1,4 +1,5 @@
 .idea
 venv
 .env
-my.cnf
+comander
+chave_plagos.pem
