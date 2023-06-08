@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,8 @@ SECRET_KEY = 'django-insecure-vs=yx=ai4&z+=m0!#yr3ik)7krn43%atzw7u=wlk8a^vr@-uo^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.144.10.2']
+#ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -95,7 +97,8 @@ DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.mysql',
         'OPTIONS':{
-            'read_default_file': '/home/lourival/PycharmProjects/plagos/my.cnf',
+            #'read_default_file': '/home/lourival/PycharmProjects/plagos/my.cnf',
+            'read_default_file': '/home/ubuntu/plagos/my.cnf',
         },
    }
 }
@@ -106,7 +109,17 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#ENVIO DE EMAIL
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    DEFAULT_FROM_EMAIL = 'suporte.plagos@gmail.com'
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+    EMAIL_PORT = config ('EMAIL_PORT')
+    EMAIL_HOST = config('EMAIL_HOST')
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
